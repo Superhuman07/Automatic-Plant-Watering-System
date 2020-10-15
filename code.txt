@@ -6,20 +6,21 @@
 
 
 
-int LmotorUp = 10; //initialising Arduino port 10 be be called as LmotorUp
-int LmotorDn = 11; //initialising Arduino port 11 be be called as LmotorDn
-int RmotorUp = 8;  //initialising Arduino port 8 be be called as RmotorUp
-int RmotorDn = 9;  //initialising Arduino port 9 be be called as RmotorDn
-int left = 6;
-int right = 12;
-int current_date;
-int date_to_run = Null;
+double LmotorUp = 10.0; //initialising Arduino port 10 be be called as LmotorUp
+double LmotorDn = 11.0; //initialising Arduino port 11 be be called as LmotorDn
+double RmotorUp = 8.0;  //initialising Arduino port 8 be be called as RmotorUp
+double RmotorDn = 9.0;  //initialising Arduino port 9 be be called as RmotorDn
+double left = 6.0;
+double right = 12.0;
+DATE current_date; // updated to current version of date format datatype
+DATE date_to_run = Null; // updated to current version of date format datatype
 
 
 
 void setup()
 {
-  Serial.begin(9600);
+  //Serial begin port 9600 no longer works so using 4600
+  Serial.begin(4600);
   // Setting ports as OUTPUTS as they supply signal values to motor driver
   pinMode(LmotorUp, OUTPUT);
   pinMode(LmotorDn, OUTPUT);
@@ -27,7 +28,8 @@ void setup()
   pinMode(RmotorDn, OUTPUT);
   pinMode(left, OUTPUT);
   pinMode(right, OUTPUT);
-  Serial.println("Welcome to automatic plant watering system Type 's' to start and press 'r' 'y' 't' to change the rpm or Enter 'd' days to automate watering");
+  //change small characters no longer works dont know what happened so change to upper caps
+  Serial.println("Welcome to automatic plant watering system Type 'S' to start and press 'R' 'Y' 'T' to change the rpm or Enter 'D' days to automate watering");
   // A delay of 1 second for user
   delay(1000);
 }
@@ -44,23 +46,23 @@ void loop()
     switch (input)
     {
       // Calling respective functions if mathced with case label
-      case 's' : MoveF();
+      case 'S' : MoveF();
         Serial.println("System is started! Press h to stop the system");
         break;
       // Here is it important to use '' as that stores the ASCII value is the letter in the variable you can add CAPITAL letters
-      case 'r' : MoveB();
+      case 'R' : MoveB();
         Serial.println("System is started! Press h to stop the system");
         break;
-      case 'y' : MoveL();
+      case 'Y' : MoveL();
         Serial.println("System is started! Press h to stop the system");
         break;
-      case 't' : MoveR();
+      case 'T' : MoveR();
         Serial.println("System is started! Press h to stop the system");
         break;
-      case 'h' : Stop();
+      case 'H' : Stop();
         Serial.println("System is stopped! Press s to start the system");
         break;
-      case 'd' : Automate(); 
+      case 'D' : Automate(); 
         Serial.println();
         break;
       default : break;
@@ -156,6 +158,7 @@ void Automate()
   int days = Serial.read();
   String num = String(days);
   Serial.print("After exact "); Serial.print(char(days)); Serial.print(" days watering will automatically starts Thank you");
+  // curdate function now works accurately
   current_date = now.getCurDate();
   date_to_run = current_date.day + days;
   
